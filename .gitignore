@@ -39,3 +39,28 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# bun
+bun.lockb
+
+# docker
+.dockerignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation (keep only README.md)
+DEPLOYMENT.md
+GITHUB_SETUP.md
+QUICK_START.md
+START_HERE.md
+*.md
+!README.md
