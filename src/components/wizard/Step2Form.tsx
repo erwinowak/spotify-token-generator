@@ -24,7 +24,12 @@ export function Step2Form({ onNext, initialData }: Step2FormProps) {
 
   const defaultRedirectUri = useMemo(() => {
     if (typeof window !== "undefined") {
-      // Konwertuj localhost na 127.0.0.1 dla zgodności z Spotify Dashboard
+      // Użyj NEXT_PUBLIC_SITE_URL jeśli jest dostępna (produkcja)
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+      if (siteUrl) {
+        return `${siteUrl}/api/callback`;
+      }
+      // W development: konwertuj localhost na 127.0.0.1 dla zgodności z Spotify Dashboard
       const origin = window.location.origin.replace("localhost", "127.0.0.1");
       return `${origin}/api/callback`;
     }

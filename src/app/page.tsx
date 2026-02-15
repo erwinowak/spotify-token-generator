@@ -47,10 +47,20 @@ function HomeContent() {
 
     try {
       // Użyj dokładnie tego samego redirectUri co w handleStep2Submit
-      // Konwertuj localhost na 127.0.0.1 dla zgodności z Spotify Dashboard
-      const redirectUri = formData.redirectUri || (typeof window !== "undefined"
-        ? `${window.location.origin.replace("localhost", "127.0.0.1")}/api/callback`
-        : "http://127.0.0.1:3000/api/callback");
+      let redirectUri = formData.redirectUri;
+      if (!redirectUri && typeof window !== "undefined") {
+        // Użyj NEXT_PUBLIC_SITE_URL jeśli jest dostępna (produkcja)
+        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+        if (siteUrl) {
+          redirectUri = `${siteUrl}/api/callback`;
+        } else {
+          // W development: konwertuj localhost na 127.0.0.1 dla zgodności z Spotify Dashboard
+          redirectUri = `${window.location.origin.replace("localhost", "127.0.0.1")}/api/callback`;
+        }
+      }
+      if (!redirectUri) {
+        redirectUri = "http://127.0.0.1:3000/api/callback";
+      }
 
       const response = await fetch("/api/exchange", {
         method: "POST",
@@ -138,10 +148,20 @@ function HomeContent() {
 
   const handleStep2Submit = async (data: FormData) => {
     // Zawsze używaj tego samego redirect URI
-    // Konwertuj localhost na 127.0.0.1 dla zgodności z Spotify Dashboard
-    const redirectUri = typeof window !== "undefined"
-      ? `${window.location.origin.replace("localhost", "127.0.0.1")}/api/callback`
-      : data.redirectUri || "http://127.0.0.1:3000/api/callback";
+    let redirectUri = data.redirectUri;
+    if (!redirectUri && typeof window !== "undefined") {
+      // Użyj NEXT_PUBLIC_SITE_URL jeśli jest dostępna (produkcja)
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+      if (siteUrl) {
+        redirectUri = `${siteUrl}/api/callback`;
+      } else {
+        // W development: konwertuj localhost na 127.0.0.1 dla zgodności z Spotify Dashboard
+        redirectUri = `${window.location.origin.replace("localhost", "127.0.0.1")}/api/callback`;
+      }
+    }
+    if (!redirectUri) {
+      redirectUri = "http://127.0.0.1:3000/api/callback";
+    }
 
     const formDataWithRedirect: FormData = {
       ...data,
@@ -346,16 +366,18 @@ function HomeContent() {
 
         <StepIndicator currentStep={currentStep} />
 
-        <div className="mt-12">
-          {currentStep === 1 && <Step1Instructions onNext={handleStep1Next} />}
-          {currentStep === 2 && (
-            <Step2Form onNext={handleStep2Submit} initialData={formData} />
-          )}
-          {currentStep === 3 && authUrl && <Step3Redirect authUrl={authUrl} />}
-          {currentStep === 4 && refreshToken && (
-            <Step4Token refreshToken={refreshToken} onReset={reset} />
-          )}
-        </div>
+            <div className="mt-12">
+              {currentStep === 1 && <Step1Instructions onNext={handleStep1Next} />}
+              {currentStep === 2 && (
+                <Step2Form onNext={handleStep2Submit} initialData={formData} />
+              )}
+              {currentStep === 3 && authUrl && (
+                <Step3Redirect authUrl={authUrl} onReset={reset} />
+              )}
+              {currentStep === 4 && refreshToken && (
+                <Step4Token refreshToken={refreshToken} onReset={reset} />
+              )}
+            </div>
 
         {isLoading && currentStep !== 3 && (
           <div className="fixed inset-0 bg-background/80 dark:bg-background/90 backdrop-blur-sm flex items-center justify-center z-50">
