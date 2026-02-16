@@ -1,6 +1,6 @@
-![Spotify Refresh Token Generator](https://token.erwinowak.dev/api/og-readme-image/1000/400)
-
 # 🎵 Spotify Refresh Token Generator
+
+![Spotify Refresh Token Generator](https://token.erwinowak.dev/api/og-readme-image/1000/400)
 
 A modern, beautiful web application for generating Spotify refresh tokens. Built with Next.js 16, Tailwind CSS v4, Framer Motion, and shadcn/ui.
 
