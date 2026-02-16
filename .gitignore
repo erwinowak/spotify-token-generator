@@ -43,9 +43,6 @@ next-env.d.ts
 # bun
 bun.lockb
 
-# docker
-.dockerignore
-
 # IDE
 .vscode/
 .idea/
@@ -58,6 +55,7 @@ bun.lockb
 Thumbs.db
 
 # Documentation (keep only README.md)
+docs/
 DEPLOYMENT.md
 GITHUB_SETUP.md
 QUICK_START.md
