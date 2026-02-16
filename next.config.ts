@@ -4,14 +4,9 @@ const nextConfig: NextConfig = {
   // Enable standalone output for Docker optimization
   output: "standalone",
   
-  // Disable telemetry
-  telemetry: false,
-  
-  // Ensure proper file tracing for standalone
-  experimental: {
-    outputFileTracingIncludes: {
-      "/*": ["./node_modules/**/*"],
-    },
+  // Ensure proper file tracing for standalone (moved from experimental in Next.js 16)
+  outputFileTracingIncludes: {
+    "/*": ["./node_modules/**/*"],
   },
 };
 
