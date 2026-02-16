@@ -20,9 +20,6 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
-# Clean any existing build artifacts
-RUN rm -rf .next
-
 # Build the application
 RUN bun run build
 
@@ -33,21 +30,19 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Copy necessary files from builder
-# Standalone output includes server.js and all necessary dependencies
+# Copy public directory (create empty if it doesn't exist)
 COPY --from=builder /app/public ./public
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
-
-# Ensure proper permissions
-RUN chmod -R 755 /app
 
 EXPOSE 3000
 
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# Start the application using Bun
-# Next.js standalone creates server.js which can be run with Bun
-# Using node instead of bun run to avoid potential issues with server actions
+# Start the application using Node.js
+# Next.js standalone creates server.js which should be run with node
 CMD ["node", "server.js"]
