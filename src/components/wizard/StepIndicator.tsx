@@ -1,6 +1,6 @@
 "use client";
 
-import { Check } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { Step } from "@/hooks/use-wizard";
 import { cn } from "@/lib/utils";
 
@@ -9,101 +9,55 @@ interface StepIndicatorProps {
 }
 
 const steps = [
-  { number: 1, label: "Instructions" },
-  { number: 2, label: "App Data" },
-  { number: 3, label: "Authorization" },
-  { number: 4, label: "Token" },
+  { number: 1, label: "Config" },
+  { number: 2, label: "Scopes" },
+  { number: 3, label: "Result" },
 ] as const;
 
 export function StepIndicator({ currentStep }: StepIndicatorProps) {
+  const progressWidth =
+    currentStep === 1 ? "0%" : currentStep === 2 ? "50%" : "100%";
+
   return (
-    <div className="w-full max-w-5xl mx-auto mb-16 px-4">
-      <div className="relative flex items-center justify-between">
-        {/* Connecting Lines Container - positioned absolutely to span full width */}
-        <div className="absolute top-6 left-0 right-0 h-0.5 -z-10 hidden sm:block">
-          {steps.map((step, index) => {
-            if (index === steps.length - 1) return null;
-            
-            const isCompleted = currentStep > step.number;
-            const stepWidth = 100 / steps.length;
-            const lineStart = (index * stepWidth) + (stepWidth / 2);
-            const lineEnd = ((index + 1) * stepWidth) - (stepWidth / 2);
-            const lineWidth = lineEnd - lineStart;
-            
-            return (
-              <div
-                key={`line-${index}`}
-                className="absolute h-full"
-                style={{
-                  left: `${lineStart}%`,
-                  width: `${lineWidth}%`,
-                }}
-              >
-                {/* Background line */}
-                <div className="absolute inset-0 bg-muted/30 dark:bg-muted/20" />
-                {/* Progress line */}
-                <div
-                  className={cn(
-                    "absolute inset-0 bg-primary origin-left transition-all duration-700 ease-out",
-                    isCompleted ? "scale-x-100" : "scale-x-0"
-                  )}
-                  suppressHydrationWarning
-                />
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Steps */}
-        {steps.map((step, index) => {
-          const isCompleted = currentStep > step.number;
-          const isCurrent = currentStep === step.number;
-          const isUpcoming = currentStep < step.number;
-
-          return (
-            <div key={step.number} className="relative flex-1 flex flex-col items-center z-10">
-              {/* Step Circle */}
-                    <div
-                      className={cn(
-                  "relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 transition-all duration-500 shrink-0",
-                    isCompleted
-                    ? "bg-primary border-primary text-primary-foreground shadow-lg shadow-primary/40"
-                      : isCurrent
-                      ? "bg-primary border-primary text-primary-foreground shadow-xl shadow-primary/60 ring-4 ring-primary/30 scale-110"
-                      : "bg-background/80 backdrop-blur-sm border-muted-foreground/30 text-muted-foreground"
-                  )}
-                suppressHydrationWarning
-                >
-                  {isCompleted ? (
-                  <Check className="w-7 h-7 sm:w-8 sm:h-8" suppressHydrationWarning />
-                  ) : (
-                  <span className="text-lg sm:text-xl font-bold" suppressHydrationWarning>
-                    {step.number}
-                  </span>
-                  )}
-                
-                {/* Glow effect for current step */}
-                {isCurrent && (
-                  <div className="absolute inset-0 rounded-full bg-primary/20 animate-ping" />
-                )}
-              </div>
-                
-              {/* Step Label */}
-                <p
-                  className={cn(
-                  "mt-4 text-xs sm:text-sm font-semibold text-center whitespace-nowrap transition-all duration-300",
-                    isCurrent 
-                    ? "text-primary opacity-100 scale-105"
-                      : isCompleted
-                        ? "text-foreground opacity-90"
-                        : "text-muted-foreground opacity-60"
-                  )}
-                >
-                  {step.label}
-                </p>
-            </div>
-          );
-        })}
+    <div className="mb-12 max-w-lg mx-auto">
+      {/* Circles row – line is vertically centered on this row only */}
+      <div className="flex justify-between items-center relative h-8">
+        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-zinc-800 -translate-y-1/2 z-0" />
+        <div
+          className="absolute top-1/2 left-0 h-0.5 bg-emerald-500 -translate-y-1/2 z-0 transition-all duration-500"
+          style={{ width: progressWidth }}
+        />
+        {steps.map((s) => (
+          <div
+            key={s.number}
+            className={cn(
+              "relative z-10 w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs border-2 transition-all duration-300 shrink-0 bg-[#09090b]",
+              currentStep >= s.number
+                ? "bg-zinc-900 border-emerald-500 text-emerald-500"
+                : "bg-zinc-900 border-zinc-700 text-zinc-600"
+            )}
+          >
+            {currentStep > s.number ? (
+              <CheckCircle size={14} />
+            ) : (
+              s.number
+            )}
+          </div>
+        ))}
+      </div>
+      {/* Labels row – same spacing as circles */}
+      <div className="flex justify-between mt-2 px-0">
+        {steps.map((s) => (
+          <span
+            key={s.number}
+            className={cn(
+              "w-8 text-center text-[10px] font-bold uppercase tracking-wider",
+              currentStep >= s.number ? "text-zinc-300" : "text-zinc-700"
+            )}
+          >
+            {s.label}
+          </span>
+        ))}
       </div>
     </div>
   );

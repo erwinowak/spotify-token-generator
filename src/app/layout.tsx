@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Footer } from "@/components/Footer";
+import { DEFAULT_DEV_ORIGIN } from "@/lib/constants";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,10 +34,10 @@ export const metadata: Metadata = {
     "API token",
     "music API",
   ],
-  authors: [{ name: "Erwin Owak", url: "https://erwinowak.dev" }],
-  creator: "Erwin Owak",
-  publisher: "Erwin Owak",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://127.0.0.1:3000"),
+  authors: [{ name: "Erwin Nowak", url: "https://erwinowak.dev" }],
+  creator: "Erwin Nowak",
+  publisher: "Erwin Nowak",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_DEV_ORIGIN),
   alternates: {
     canonical: "/",
   },

@@ -6,6 +6,7 @@ export const spotifyScopes = [
   "user-read-playback-state",
   "user-modify-playback-state",
   "user-read-currently-playing",
+  "app-remote-control",
   "playlist-read-private",
   "playlist-read-collaborative",
   "playlist-modify-public",
