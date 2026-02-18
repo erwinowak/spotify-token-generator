@@ -3,7 +3,8 @@
 import { useEffect, useState, Suspense, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
-import { Terminal, ExternalLink } from "lucide-react";
+import Image from "next/image";
+import { ExternalLink } from "lucide-react";
 import { useWizard } from "@/hooks/use-wizard";
 import { StepIndicator } from "@/components/wizard/StepIndicator";
 import { Step1Config } from "@/components/wizard/Step1Config";
@@ -195,11 +196,11 @@ function HomeContent() {
       <nav className="border-b border-zinc-800 bg-[#09090b]/80 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-zinc-800 rounded-lg border border-zinc-700 flex items-center justify-center text-emerald-400">
-              <Terminal size={18} />
+            <div className="w-8 h-8 rounded-lg border border-zinc-700 flex items-center justify-center overflow-hidden shrink-0">
+              <Image src="/icon" alt="" width={32} height={32} className="rounded-lg" />
             </div>
             <span className="font-bold text-lg tracking-tight text-zinc-100">
-              Token Generator{" "}
+              Token Generator{"\u00A0"}
               <span className="text-zinc-500 font-normal">for Spotify®</span>
             </span>
           </div>
